@@ -91,7 +91,8 @@ endif()
 
 # Install and post-install
 # Get configure
-set(GPGPUSIM_CONFIG "gcc-${CMAKE_CXX_COMPILER_VERSION}/cuda-${CUDA_VERSION_NUMBER}/${GPGPUSIM_BUILD_MODE}")
+# set(GPGPUSIM_CONFIG "gcc-${CMAKE_CXX_COMPILER_VERSION}/cuda-${CUDA_VERSION_NUMBER}/${GPGPUSIM_BUILD_MODE}")
+set(GPGPUSIM_CONFIG "${GPGPUSIM_BUILD_MODE}")
 
 # Env var setup script
 include(gpgpusim_gen_setup_environment.cmake)
@@ -100,6 +101,12 @@ include(gpgpusim_gen_setup_environment.cmake)
 set(GPGPUSIM_INSTALL_PATH ${PROJECT_SOURCE_DIR}/lib/${GPGPUSIM_CONFIG})
 install(TARGETS cudart DESTINATION ${GPGPUSIM_INSTALL_PATH})
 
+if(1)
+install(CODE "execute_process\(\
+    COMMAND ${CMAKE_COMMAND} -E create_symlink \
+    ${GPGPUSIM_INSTALL_PATH}/$<TARGET_FILE_NAME:cudart> \
+    ${GPGPUSIM_INSTALL_PATH}/$<TARGET_FILE_NAME:cudart>.12\)")
+elseif()
 # Installing symlinks
 install(CODE "execute_process\(\
     COMMAND ${CMAKE_COMMAND} -E create_symlink \
@@ -165,3 +172,4 @@ install(CODE "execute_process\(\
     COMMAND ${CMAKE_COMMAND} -E create_symlink \
     ${GPGPUSIM_INSTALL_PATH}/$<TARGET_FILE_NAME:cudart> \
     ${GPGPUSIM_INSTALL_PATH}/$<TARGET_FILE_NAME:cudart>.11.0\)")
+endif()
